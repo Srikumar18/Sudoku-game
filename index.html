@@ -2,115 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sudoku Board</title>
-  <link rel="stylesheet" href="app.css">
+  <title>Sudoku Home</title>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <div class="sudoku-container">
-    <table class="sudoku-board">
-      <tbody>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        <tr>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-          <td><input type="text" maxlength="1"></td>
-        </tr>
-        
-      </tbody>
-    </table>
+  <div class="container">
+    <h1 id="title">Sudoku Master</h1>
+    <div id="selectDifficulty">
+      <label for="difficulty">Select Difficulty:</label>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+    <button id="start">Start Game</button>
   </div>
+
+  <script>
+    document.getElementById('start').addEventListener('click', function() {
+      const mode = document.getElementById('difficulty').value;
+      localStorage.setItem('sudokuDifficulty', mode);
+      window.location.href = 'game.html';
+    });
+  </script>
+
 </body>
-</html>
+</html> 
