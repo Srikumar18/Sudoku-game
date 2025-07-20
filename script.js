@@ -1,24 +1,33 @@
 const sudokuBoardBody = document.getElementById('sudoku-board-body');
 const inputs = document.querySelectorAll('.sudoku-board input');
+const resetBtn = document.querySelector('#resetButton');
+const solveBtn = document.querySelector('#solveButton');
+const checkBtn = document.querySelector('#checkButton');
 
-const createBoard = function(sudokuBoardBody){
+const createBoard = async function(sudokuBoardBody){
+    await getPuzzle(window.difficulty);
+    console.log(window.puzzle);
     for (let row = 0; row < 9; row++){
         const tr = document.createElement('tr');
         for (let col = 0; col < 9; col++){
             const td = document.createElement('td');
             const input = document.createElement('input');
+            const val = window.puzzle[row][col];
 
             input.type = "number";
-            input.maxLength = 1;
             input.min = 1;
             input.max = 9;
             input.dataset.row = row;
             input.dataset.col = col;
+            input.value = val !== null ? val : '';
+            input.disabled = val !== null;
+            
             //Keeps only the last character
             input.addEventListener('input', (e) => {
-                const value = e.target.value;
+                let value = e.target.value;
                 if (value.length > 1)
-                    e.target.value = value.slice(-1); 
+                    value = value.slice(-1);
+                e.target.value = value;
             });
 
             //Highlight selected cell
@@ -35,14 +44,19 @@ const createBoard = function(sudokuBoardBody){
 
             //Handle key press input
             input.addEventListener('keydown', function(e) {
+                const r = parseInt(this.dataset.row);
+                const c = parseInt(this.dataset.col);
                 if (e.key >= '1' && e.key <= '9') {
                     e.preventDefault();
                     this.value = e.key;
                     td.classList.add('selected');
+                    window.puzzle[r][c] = parseInt(e.key);
                 } else if (e.key === 'Backspace' || e.key === 'Delete') {
                     e.preventDefault();
                     this.value = '';
+                    window.puzzle[r][c] = null;
                 }
+                console.log(window.puzzle);
             });
 
             //Arrow keys navigation
@@ -74,12 +88,13 @@ const createBoard = function(sudokuBoardBody){
         }
         sudokuBoardBody.appendChild(tr);
     }
+    checkBtn.style.display = 'inline-block';
+    solveBtn.style.display = 'inline-block';
+    resetBtn.style.display = 'inline-block';
+    document.querySelector('.sudoku-container').style.display = 'block';
 };   
 
-createBoard(sudokuBoardBody);
-
-// Store the selected difficulty mode from localStorage for use in the game
-window.sudokuDifficulty = localStorage.getItem('sudokuDifficulty') || 'easy';
+window.difficulty = localStorage.getItem('sudokuDifficulty') || 'easy';
 
 // 5. Deselect all when clicking outside the board
 document.addEventListener('click', function(e) {
@@ -88,4 +103,34 @@ document.addEventListener('click', function(e) {
             .forEach(cell => cell.classList.remove('selected'));
     }
 });
+
+async function getPuzzle(difficulty) {
+    await fetch(`https://api.api-ninjas.com/v1/sudokugenerate?difficulty=${window.difficulty}`, {
+        method: 'GET',
+        headers: {
+          'X-Api-Key': '8kqf2JoV7B+Au0OFqITIyw==MnABwZlrgflChd1X'
+        }
+      })
+    .then(res => res.json())
+    .then(data => window.puzzle = data.puzzle)
+    .catch(err => {
+        console.log(err);
+    });
+}
+
+async function loadPuzzle(){
+    await getPuzzle(window.difficulty);
+    const inputs = document.querySelectorAll('td input');
+    for (let i = 0; i < 81; i++){
+        let row = Math.floor(i/9);
+        let col = i % 9;
+        const val = window.puzzle[row][col];
+        inputs[i].value = val !== null ? val : '';
+        inputs[i].disabled = val !== null;
+    }
+}
+
+
+createBoard(sudokuBoardBody);
+
 
