@@ -154,3 +154,42 @@ body {
   transform: translateY(-1px);
 }
 
+/* Error styling for invalid numbers */
+.sudoku-board input.error {
+  border: 2px solid red !important;
+  color: red !important;
+}
+
+/* Override for error state */
+.sudoku-board input[style*="border: 2px solid red"] {
+  border: 2px solid red !important;
+  color: red !important;
+}
+
+#timer{
+  background: #ffffffcc;
+  backdrop-filter: blur(20px);
+  font-family: monospace;
+  font-weight: 500;
+  text-align: center;
+  width: 120px;
+  padding: 8px;
+  border-radius: 10px; 
+  margin: 0 auto 20px auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  font-size: 1.4rem;
+}
+
+#message{
+  display: none;
+  text-align: center;
+  background: #e3dfdfcc;
+  backdrop-filter: blur(20px);
+  width: 350px;
+  padding: 8px;
+  margin: 10px auto;
+  font-size: 1rem;
+  text-align: center;
+  border-radius: 5px;
+  color: green;
+}
