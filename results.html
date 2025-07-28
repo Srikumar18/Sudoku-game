@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Results</title>
+    <link rel="stylesheet" href="results.css">
+</head>
+<body>
+    <a href="index.html" class="home-btn">Home</a>
+    <div class="top-times-container">
+        <div class="top-times-title">Your Top 5 Times</div>
+        <ul class="times-list" id="timesList"></ul>
+    </div>
+    <script>
+        function formatTime(ms) {
+            const minutes = String(Math.floor(ms / 60000)).padStart(2, '0');
+            const seconds = String(Math.floor((ms % 60000) / 1000)).padStart(2, '0');
+            return `${minutes}:${seconds}`;
+        }
+        const records = JSON.parse(localStorage.getItem('sudokuTopTimes') || '[]');
+        const timesList = document.getElementById('timesList');
+
+        if (records.length === 0) {
+            timesList.innerHTML = '<li>No times yet!</li>';
+        } else {
+            records.slice(0, 5).forEach((record, i) => {
+                const li = document.createElement('li');
+                li.textContent = `${i + 1}. ${formatTime(record.time)} (${record.difficulty})`;
+                if (i < 2)
+                    li.style.color = ['gold', 'silver', 'bronze'][i];
+                timesList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -10,7 +10,6 @@ let elapsedTime = 0;
 let minutes, seconds, timerId;
 let originalPuzzle = null;
 let solutionPuzzle = null;
-
 window.difficulty = localStorage.getItem('sudokuDifficulty') || 'easy';
 
 function startTimer(){
@@ -308,9 +307,10 @@ function showMessage(text, color = 'green') {
 }
 
 // Button event listeners
+let solvedByUser = true; // Track if user solved without using solve button
+
 solveBtn.addEventListener('click', function() {
     const inputs = document.querySelectorAll('.sudoku-board input');
-
     for (let i = 0; i < 81; i++) {
         let row = Math.floor(i/9);
         let col = i % 9;
@@ -321,19 +321,18 @@ solveBtn.addEventListener('click', function() {
         inputs[i].style.color = '';
     }
     stopTimer();
+    solvedByUser = false;
     showMessage('Sudoku puzzle solved!', 'green');
 });
 
 checkBtn.addEventListener('click', function() {
     const inputs = document.querySelectorAll('.sudoku-board input');
     let hasError = false;
-    
     // Clear previous error styling
     inputs.forEach(input => {
         input.style.border = '';
         input.style.color = '';
     });
-    
     for (let i = 0; i < 81; i++) {
         const input = inputs[i];
         if (input.disabled) continue;
@@ -348,17 +347,33 @@ checkBtn.addEventListener('click', function() {
             }
         }
     }
-    
     if (!hasError) {
         const filledCells = Array.from(inputs).filter(input => input.value !== '').length;
         if (filledCells === 81) {
             clearInterval(timerId);
+            // Only update top times if user solved without using solve button
+            if (solvedByUser) {
+                let topTimes = JSON.parse(localStorage.getItem('sudokuTopTimes') || '[]');
+                // Parse timer text (mm:ss) to ms
+                const [mm, ss] = timer.textContent.split(':').map(Number);
+                const ms = mm * 60000 + ss * 1000;
+                topTimes.push({ time: ms, difficulty: window.difficulty });
+                topTimes = topTimes.sort((a, b) => a.time - b.time).slice(0, 5);
+                localStorage.setItem('sudokuTopTimes', JSON.stringify(topTimes));
+
+            }
             showMessage('Congratulations! The puzzle is solved! Time: ' + timer.textContent, 'green');
-        }else
+            setTimeout(() => {
+                window.location.href = 'results.html';
+            }, 2500); // Redirect after 2.5 seconds
+        } else {
             showMessage('No errors found!', 'green');
+        }
     } else {
         showMessage('Found errors! Incorrect numbers are highlighted in red.', 'red');
     }
+    // Reset solvedByUser for next game
+    solvedByUser = true;
 });
 
 resetBtn.addEventListener('click', function() {
@@ -376,5 +391,6 @@ resetBtn.addEventListener('click', function() {
     }
     stopTimer();
     startTimer();
+    solvedByUser = true;
 });
 
